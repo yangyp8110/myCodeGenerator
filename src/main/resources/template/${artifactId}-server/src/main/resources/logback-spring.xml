@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <jmxConfigurator/>
+
+    <springProperty scope="context" name="env" source="spring.profiles.active"  defaultValue="dev"/>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%level][%thread]:%logger{50} [%method:%line] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+        <springProfile name="dev,fat">
+            <logger name="com.log" level="INFO"/>
+            <root level="INFO">
+                <appender-ref ref="STDOUT"/>
+            </root>
+            <logger name="${basepackage}.mapper.${database_name_lower}" level="DEBUG" additivity="false">
+                <appender-ref ref="STDOUT" />
+            </logger>
+        </springProfile>
+        <springProfile name="uat,pro">
+            <root level="INFO">
+                <appender-ref ref="INFO"/>
+            </root>
+        </springProfile>
+</configuration>

@@ -1,0 +1,204 @@
+
+<#assign className = table.className>
+<#assign classNameFirstLower = table.classNameFirstLower>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<#macro mapperEl value>${r"#{"}${value}}</#macro>
+<#macro mapperWrap value>${r"${"}${value}}</#macro>
+<#macro mapperKeyVal var1 var2>${r"${"}${var1}}${r" "}${r"#{"}${var2}}</#macro>
+<#macro mapperEl2 val,type>${r"#{"}${val},jdbcType=${type}}</#macro>
+<#macro mapperIf value>${r'<if test="'}${value}${r'!= null">'}</#macro>
+<#macro mapperIfTestPredicate preffix value>${r'<if test="'}${preffix}${r'.'}${value}${r'!= null">'}</#macro>
+<#macro mapperElPreffix preffix value>${r'#{'}${preffix}${r'.'}${value}}</#macro>
+<#macro mapperEndIf>${r'</if>'}</#macro>
+<#macro mapperElStartWithEmpty value>${r"            #{"}${value}}</#macro>
+<#macro mapperWhereExampleWithEmpty value>${r"                                      #{"}${value}}</#macro>
+
+<mapper namespace="${basepackage}.mapper.${database_name_lower}.mapper.${className}Mapper" >
+    <resultMap id="BaseResultMap" type="${basepackage}.entity.${database_name_lower}.${className}Entity" >
+        <#list table.columns as column>
+        <result column="${column.sqlName}" property="${column.columnNameLower}" jdbcType="${column.jdbcSqlTypeName}"/>
+        </#list>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        <#list table.columns as column>${column.sqlName}<#if column_has_next>,</#if></#list>
+    </sql>
+
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="ordCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and <@mapperWrap "criterion.condition" />
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and <@mapperKeyVal "criterion.condition" "criterion.value"/>
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and <@mapperKeyVal "criterion.condition" "criterion.value"/> and <@mapperEl "criterion.secondValue"/>
+                                </when>
+                                <when test="criterion.listValue">
+                                    and <@mapperWrap "criterion.condition" />
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                      <@mapperWhereExampleWithEmpty "listItem"/>
+
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.ordCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and <@mapperWrap "criterion.condition" />
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and <@mapperKeyVal "criterion.condition" "criterion.value"/>
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and <@mapperKeyVal "criterion.condition" "criterion.value"/> and <@mapperEl "criterion.secondValue"/>
+                                </when>
+                                <when test="criterion.listValue">
+                                    and <@mapperWrap "criterion.condition" />
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                      <@mapperWhereExampleWithEmpty "listItem" />
+
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <select id="getByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select <include refid="Base_Column_List" />
+        from ${table.sqlName}
+        where
+        <trim suffixOverrides="AND" >
+            ${table.pkColumn.sqlName} = <@mapperEl2 table.pkColumn.columnNameFirstLower table.pkColumn.jdbcSqlTypeName/> AND
+        </trim>
+    </select>
+
+    <select id="getByPrimaryKeyList" resultMap="BaseResultMap" parameterType="map">
+        select <include refid="Base_Column_List" />
+        from ${table.sqlName}
+        where ${table.pkColumn.sqlName} in
+        <foreach collection="keyList" item="item" index="index" open="(" close=")" separator=",">
+            <@mapperElStartWithEmpty "item"/>
+
+        </foreach>
+    </select>
+
+    <select id="getSingleByPredicate" resultMap="BaseResultMap" parameterType="${basepackage}.entity.${database_name_lower}.predicate.${className}Example" >
+        select
+        <choose>
+            <when test="selectFields != null"><@mapperWrap "selectFields" /></when>
+            <otherwise><include refid="Base_Column_List" /></otherwise>
+        </choose>
+        from ${table.sqlName}
+        <@mapperIf "_parameter"/><include refid="Example_Where_Clause" /><@mapperEndIf />
+        <@mapperIf "orderByClause"/>order by<@mapperWrap "orderByClause"/><@mapperEndIf />
+        limit 1
+     </select>
+
+    <select id="getAllByPredicate" resultMap="BaseResultMap" parameterType="${basepackage}.entity.${database_name_lower}.predicate.${className}Example" >
+        select
+        <choose>
+            <when test="selectFields != null"><@mapperWrap "selectFields" /></when>
+            <otherwise><include refid="Base_Column_List" /></otherwise>
+        </choose>
+        from ${table.sqlName}
+        <@mapperIf "_parameter"/><include refid="Example_Where_Clause" /><@mapperEndIf />
+        order by ${table.pkColumn.sqlName} desc
+    </select>
+
+    <select id="queryCount" resultType="java.lang.Integer" parameterType="${basepackage}.entity.${database_name_lower}.predicate.${className}Example" >
+        select count(1) from ${table.sqlName}
+        <@mapperIf "_parameter"/><include refid="Example_Where_Clause" /><@mapperEndIf />
+    </select>
+
+    <!--配合com.github.pagehelper使用-->
+    <select id="getListByPage" resultMap="BaseResultMap" parameterType="${basepackage}.entity.${database_name_lower}.predicate.${className}Example" >
+        select
+        <choose>
+            <when test="selectFields != null"><@mapperWrap "selectFields" /></when>
+            <otherwise><include refid="Base_Column_List" /></otherwise>
+        </choose>
+        from ${table.sqlName}
+        <@mapperIf "_parameter"/><include refid="Example_Where_Clause" /><@mapperEndIf />
+        <@mapperIf "orderByClause"/>order by<@mapperWrap "orderByClause"/><@mapperEndIf />
+    </select>
+
+    <update id="updateByPrimaryKey" parameterType="${basepackage}.entity.${database_name_lower}.${className}Entity">
+        UPDATE ${table.sqlName}
+            <include refid="Update_Set_Condition" />
+        WHERE
+        ${table.pkColumn.sqlName} = <@mapperElPreffix "record" table.pkColumn.columnNameFirstLower/>
+    </update>
+
+    <update id="updateByPredicate" parameterType="map">
+        UPDATE ${table.sqlName}
+            <include refid="Update_Set_Condition" />
+        <@mapperIf "_parameter"/><include refid="Update_By_Example_Where_Clause" /><@mapperEndIf />
+    </update>
+
+    <insert id="insert" parameterType="${basepackage}.entity.${database_name_lower}.${className}Entity"  useGeneratedKeys="true" keyProperty="${table.pkColumn.sqlName}">
+        insert into ${table.sqlName}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <#list table.columns as column>
+            <#if (column.columnNameFirstLower != table.pkColumn.columnNameFirstLower)>
+            <@mapperIf column.columnNameFirstLower/>${column.sqlName},<@mapperEndIf/>
+            </#if>
+        </#list>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <#list table.columns as column>
+            <#if (column.columnNameFirstLower != table.pkColumn.columnNameFirstLower)>
+            <@mapperIf column.columnNameFirstLower/><@mapperEl2 column.columnNameFirstLower column.jdbcSqlTypeName/>,<@mapperEndIf/>
+            </#if>
+        </#list>
+        </trim>
+    </insert>
+
+    <!--批量插入,传入List集合 -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into ${table.sqlName}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <#list table.columns as column><#if (column.columnNameFirstLower != table.pkColumn.columnNameFirstLower)>${column.sqlName}<#if column_has_next>,</#if></#if></#list>
+        </trim>
+        values
+        <foreach collection ="list" item="item" index= "index" separator =",">
+            <trim prefix="(" suffix=")" suffixOverrides="," >
+                <#list table.columns as column><#if (column.columnNameFirstLower != table.pkColumn.columnNameFirstLower)><@mapperElPreffix "item" column.columnNameFirstLower/><#if column_has_next>,</#if></#if></#list>
+            </trim>
+        </foreach>
+    </insert>
+
+    <sql id="Update_Set_Condition">
+        <set>
+            <#list table.columns as column>
+            <#if column.isDateTimeColumn || (column.columnNameFirstLower == table.pkColumn.columnNameFirstLower)>
+            <#else>
+            <@mapperIfTestPredicate "record" column.columnNameFirstLower/>${column.sqlName} = <@mapperElPreffix "record" column.columnNameFirstLower/><#if column_has_next>,</#if><@mapperEndIf/>
+            </#if>
+            </#list>
+        </set>
+    </sql>
+</mapper>

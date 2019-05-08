@@ -1,0 +1,20 @@
+info:
+  build:
+    name: ${artifactId}
+    groupId: ${groupId}
+    artifactId: ${artifactId}
+    version: @project.version@
+
+server:
+  port: 8083
+
+endpoints:
+  enabled: true
+  sensitive: false
+
+dataSource:
+  ${database_name_lower}:
+    url: ${jdbc_url}
+    driverClassName: ${jdbc_driver}
+    username: ${jdbc_username}
+    password: ${jdbc_password}

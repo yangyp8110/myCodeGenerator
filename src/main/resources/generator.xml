@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="GBK"?>  
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">  
+<properties>  
+    <comment>  
+        代码生成器配置文件:   
+        1.会为所有的property生成property_dir属性,如pkg=com.company => pkg_dir=com/company  
+        2.可以引用环境变量: ${env.JAVA_HOME} or System.properties: ${user.home},property之间也可以相互引用  
+    </comment>
+
+    <entry key="groupId">com.mr.yang.demo</entry>
+    <entry key="artifactId">mr-yang-demo</entry>
+    <entry key="basepackage">com.yang.demo</entry>
+    <!--database name as package name-->
+    <entry key="database_name_lower">test</entry>
+    <entry key="database_name">Test</entry>
+    <!--mapper.xml包名-->
+    <entry key="mapper_xml_package">conf.mybatis</entry>
+
+    <!-- jsp namespace: web/${namespace}/${className}/list.jsp -->  
+    <entry key="namespace">pages</entry>
+
+    <entry key="outRoot">\out</entry>
+    <!--生成策略：1:全部项目重新生成;2:仅当前库表重新生成;3:增量生成-->
+    <entry key="generate_flag">3</entry>
+
+    <!-- 需要移除的表名前缀,使用逗号进行分隔多个前缀,示例值: t_,v_ -->
+    <entry key="tableRemovePrefixes"></entry>
+
+    <!-- oracle需要指定jdbc.schema,其它数据库忽略此项配置  -->
+    <entry key="jdbc_schema"></entry>
+    <entry key="jdbc_catalog"></entry>
+      
+    <!-- 数据库类型映射  -->  
+    <entry key="java_typemapping.java.sql.Timestamp">java.util.Date</entry>
+    <entry key="java_typemapping.java.sql.Time">java.util.Date</entry>
+    <entry key="java_typemapping.java.sql.Timestamp">java.util.Date</entry>
+    <!--<entry key="java_typemapping.java.sql.Clob"></entry>-->
+    <!--<entry key="java_typemapping.java.sql.Blob"></entry>-->
+    <!--<entry key="java_typemapping.java.sql.Array"></entry>-->
+    <!--<entry key="java_typemapping.java.sql.Ref"></entry>-->
+
+    <!--登录账号-->
+    <entry key="jdbc_username">root</entry>
+    <entry key="jdbc_password">root</entry>
+    <!--登录账号-->
+
+    <!--mysql-->
+    <entry key="jdbc_url">jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=utf-8</entry>
+    <entry key="jdbc_driver">com.mysql.jdbc.Driver</entry>
+    <!--mysql-->
+
+    <!-- Oracle  jdbc:oracle:oci:@tnsname_devdb  
+    <entry key="jdbc.url">jdbc:oracle:thin:@192.168.0.177:1521:[sid]</entry>  
+    <entry key="jdbc.driver">oracle.jdbc.driver.OracleDriver</entry>  
+    -->  
+      
+    <!-- SQLServer2000   
+    <entry key="jdbc.url">jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=[database]</entry>  
+    <entry key="jdbc.driver">com.microsoft.jdbc.sqlserver.SQLServerDriver</entry>  
+    -->  
+      
+    <!-- SQLServer2005-->
+    <!--<entry key="jdbc_url">jdbc:jtds:sqlserver://localhost:1433;DatabaseName=testDb</entry>-->
+    <!--<entry key="jdbc_driver">net.sourceforge.jtds.jdbc.Driver</entry>-->
+    <!-- SQLServer2005-->
+
+    <!-- H2 -->
+    <!-- <entry key="jdbc.url">jdbc:h2:tcp://localhost/test</entry>
+    <entry key="jdbc.driver">org.h2.Driver</entry>
+    -->
+
+    <!-- JTDs for SQLServer   
+    <entry key="jdbc.url">jdbc:jtds:sqlserver://localhost:1433/[database];tds=8.0;lastupdatecount=true</entry>
+    <entry key="jdbc.driver">net.sourceforge.jtds.jdbc.Driver</entry>  
+    -->  
+  
+    <!-- PostgreSql  
+    <entry key="jdbc.url">jdbc:postgresql://localhost/[database]</entry>
+    <entry key="jdbc.driver">org.postgresql.Driver</entry>
+    -->  
+      
+    <!-- Sybase  
+    <entry key="jdbc.url">jdbc:sybase:Tds:localhost:5007/[database]</entry>
+    <entry key="jdbc.driver">com.sybase.jdbc.SybDriver</entry>
+    -->  
+      
+    <!-- DB2   
+    <entry key="jdbc.url">jdbc:db2://localhost:5000/[database]</entry>  
+    <entry key="jdbc.driver">com.ibm.db2.jdbc.app.DB2Driver</entry>  
+    -->  
+      
+    <!-- HsqlDB   
+    <entry key="jdbc.url">jdbc:hsqldb:mem:generatorDB</entry>  
+    <entry key="jdbc.driver">org.hsqldb.jdbcDriver</entry>  
+    -->  
+      
+    <!-- Derby   
+    <entry key="jdbc.url">jdbc:derby://localhost/databaseName</entry>  
+    <entry key="jdbc.driver">org.apache.derby.jdbc.ClientDriver</entry>   
+    -->
+</properties>  
