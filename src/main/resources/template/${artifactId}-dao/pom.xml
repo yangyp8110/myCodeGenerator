@@ -11,7 +11,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>demo.gener.pro</groupId>
+			<groupId>${groupId}</groupId>
 			<artifactId>${artifactId}-model</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>

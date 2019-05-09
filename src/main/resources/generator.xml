@@ -11,17 +11,18 @@
     <entry key="artifactId">mr-yang-demo</entry>
     <entry key="basepackage">com.yang.demo</entry>
     <!--database name as package name-->
-    <entry key="database_name_lower">test</entry>
     <entry key="database_name">Test</entry>
     <!--mapper.xml包名-->
     <entry key="mapper_xml_package">conf.mybatis</entry>
 
-    <!-- jsp namespace: web/${namespace}/${className}/list.jsp -->  
-    <entry key="namespace">pages</entry>
-
-    <entry key="outRoot">\out</entry>
-    <!--生成策略：1:全部项目重新生成;2:仅当前库表重新生成;3:增量生成-->
-    <entry key="generate_flag">3</entry>
+    <entry key="output_path">D:\out\</entry>
+    <!--1:增量生成(默认方式)
+        2:仅当前库重新生成
+        3:整个项目重新生成
+        4:指定表重新生成 需要配置 table_name，如果不指定则不生成任何表-->
+    <entry key="generate_flag">1</entry>
+    <!---指定生成的表  配合 generate_flag=4使用(多个table逗号分隔)-->
+    <entry key="table_name"></entry>
 
     <!-- 需要移除的表名前缀,使用逗号进行分隔多个前缀,示例值: t_,v_ -->
     <entry key="tableRemovePrefixes"></entry>
@@ -39,12 +40,9 @@
     <!--<entry key="java_typemapping.java.sql.Array"></entry>-->
     <!--<entry key="java_typemapping.java.sql.Ref"></entry>-->
 
-    <!--登录账号-->
-    <entry key="jdbc_username">root</entry>
-    <entry key="jdbc_password">root</entry>
-    <!--登录账号-->
-
     <!--mysql-->
+    <entry key="jdbc_username">root</entry>
+    <entry key="jdbc_password">123456</entry>
     <entry key="jdbc_url">jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=utf-8</entry>
     <entry key="jdbc_driver">com.mysql.jdbc.Driver</entry>
     <!--mysql-->
